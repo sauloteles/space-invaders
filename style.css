@@ -1,0 +1,16 @@
+
+.canvas{
+    background-color: red;
+    border: 1px solid black;
+    height: 600px;
+    width: 600px;
+    position: relative;
+
+}
+.display-invaders{
+    height: 550px;
+}
+.display-cannon{
+    height: 50px;
+
+}
