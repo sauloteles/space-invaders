@@ -1,6 +1,6 @@
 const canvas = document.getElementsByClassName('canvas')[0];
 
-let canhaoX = 0;
+let canhaoX = 250;
 let velocidade = 10;
 let balaY = 500
 let balaX
@@ -16,6 +16,7 @@ canhao.width = '70';
 canhao.height= '50';
 canhao.style.position = 'absolute'
 canhao.style.top = '550px'
+canhao.style.left = `${canhaoX}px`
 canvas.appendChild(canhao)
 
 
@@ -62,13 +63,13 @@ function jogoInicio(){
         let anima = setInterval(()=>{
             if(balaY >=0){
                 bala.style.top = `${balaY}px`
-                balaY-=1
+                balaY-=2
                 atirar = false;
             }else{
                 resetBala()
             }
 
-        },1)
+        },10)
 
     }
     function invaderCriar(invaderX,invaderY){
@@ -82,7 +83,7 @@ function jogoInicio(){
         let anima = setInterval(()=>{
             if(invaderY <=550){
                 invaderImg.style.top = `${invaderY}px`
-                ++invaderY
+                invaderY+=0.5 
                 try {
                     detectarColisao(balaX,balaY,invaderX,invaderY,invaderImg);
                 } catch (error) {
@@ -94,8 +95,8 @@ function jogoInicio(){
         },10)
         
     }
-    function detectarColisao(balaX,balaY,posicaoInvaderX,posicaoInvaderY,invaderImg ){
-        if(posicaoInvaderY+20 > balaY && posicaoInvaderY < balaY  && balaX >=posicaoInvaderX-10 && balaX < posicaoInvaderX+20){            
+    function detectarColisao(balaX,Ybala,posicaoInvaderX,posicaoInvaderY,invaderImg ){
+        if(posicaoInvaderY+20 > Ybala && posicaoInvaderY < Ybala  && balaX >=posicaoInvaderX-10 && balaX < posicaoInvaderX+20){            
             canvas.removeChild(invaderImg)
             let bala = document.getElementById('bala')
             balaY = -1
@@ -103,7 +104,7 @@ function jogoInicio(){
         }
     }
     for(let i = 0;i < 250;i+=50){
-        invaderCriar(i,0)
+        invaderCriar(i,50)
     }
 
 }
