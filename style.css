@@ -14,3 +14,9 @@
     height: 50px;
 
 }
+.pontos{
+    color: white;
+    position: absolute;
+    font-size: 24px;
+    margin: 0;
+}
