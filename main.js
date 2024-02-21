@@ -1,15 +1,16 @@
 const canvas = document.getElementsByClassName('canvas')[0];
+const pontos =  document.getElementsByClassName('pontos')[0];
 
 let canhaoX = 250;
 let velocidade = 10;
 let balaY = 500
 let balaX
-
 const widthMax = 530;
 const widthMin = 0;
 const canhao = new Image();
-
+let pontosCont =0
 let atirar = true;
+pontos.textContent = `Pontos: ${pontosCont}`
 
 canhao.src = './assets/cannon.png';
 canhao.width = '70';
@@ -63,17 +64,19 @@ function jogoInicio(){
         let anima = setInterval(()=>{
             if(balaY >=0){
                 bala.style.top = `${balaY}px`
-                balaY-=2
+                balaY-=2   
                 atirar = false;
             }else{
                 resetBala()
             }
 
-        },10)
+        },1)
 
     }
     function invaderCriar(invaderX,invaderY){
         let invaderImg = new Image();
+        let mudar =true;
+
         invaderImg.src = './assets/invader.png'
         invaderImg.width = '50'
         invaderImg.style.position = 'absolute';
@@ -83,7 +86,7 @@ function jogoInicio(){
         let anima = setInterval(()=>{
             if(invaderY <=550){
                 invaderImg.style.top = `${invaderY}px`
-                invaderY+=0.5 
+                
                 try {
                     detectarColisao(balaX,balaY,invaderX,invaderY,invaderImg);
                 } catch (error) {
@@ -91,21 +94,39 @@ function jogoInicio(){
             }else{
                 invaderY = 0                
             }
-            
-        },10)
+            invaderY+=1;
+        },100)
+        setInterval(()=>{
+                    
+            if(mudar){
+                invaderX += 50;
+                mudar = false
+            }else{
+                invaderX-=50
+                mudar = true
+            }
+            invaderImg.style.left = `${invaderX}px`
+
+        },1000)
+
+
+
         
     }
     function detectarColisao(balaX,Ybala,posicaoInvaderX,posicaoInvaderY,invaderImg ){
-        if(posicaoInvaderY+20 > Ybala && posicaoInvaderY < Ybala  && balaX >=posicaoInvaderX-10 && balaX < posicaoInvaderX+20){            
+        if(posicaoInvaderY+40 > Ybala && posicaoInvaderY < Ybala  && balaX >=posicaoInvaderX-20 && balaX < posicaoInvaderX+20){            
             canvas.removeChild(invaderImg)
             let bala = document.getElementById('bala')
             balaY = -1
             canvas.removeChild(bala )
+            pontos.textContent = `Pontos: ${++pontosCont}`
+            console.log(pontosCont)
         }
     }
-    for(let i = 0;i < 250;i+=50){
-        invaderCriar(i,50)
-    }
+    
+    invaderCriar(50,100)
+    invaderCriar(150,0)
+    invaderCriar(250,0)
 
 }
 
