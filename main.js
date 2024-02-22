@@ -80,6 +80,7 @@ function jogoInicio(){
         invaderImg.src = './assets/invader.png'
         invaderImg.width = '50'
         invaderImg.style.position = 'absolute';
+        invaderImg.setAttribute('class','invader-img')
         
         invaderImg.style.left = `${invaderX}px`;  
         canvas.appendChild(invaderImg)
@@ -92,7 +93,10 @@ function jogoInicio(){
                 } catch (error) {
                 }
             }else{
-                invaderY = 0                
+                clearInterval(anima)
+                canvas.removeChild(invaderImg)
+                
+                              
             }
             invaderY+=1;
         },100)
@@ -124,9 +128,23 @@ function jogoInicio(){
         }
     }
     
-    invaderCriar(50,100)
-    invaderCriar(150,0)
-    invaderCriar(250,0)
+
+
+    // invaderCriar(500,0)
+
+    setInterval(()=>{
+        let invader = document.getElementsByClassName('invader-img')[0];
+        let existeInvader = document.body.contains(invader);
+        if (!existeInvader) {            
+            quantidade = 10
+            for(let i =0;i<=500;i+=50){
+                let y = Math.floor(Math.random() * (200 - 20 + 20)) + 20;
+                invaderCriar(i,y)
+            }
+        }
+    },10)
+
+
 
 }
 
