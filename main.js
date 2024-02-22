@@ -83,6 +83,8 @@ function jogoInicio(){
     function invaderCriar(invaderX,invaderY){
         let invaderImg = new Image();
         let mudar = true;
+        let limit_x = invaderX
+        let speed = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
 
         invaderImg.src = './assets/invader.png'
         invaderImg.width = '50'
@@ -101,20 +103,26 @@ function jogoInicio(){
             }else{
                 invaderY = 0                
             }
-            invaderY+=1;
+            invaderY+=speed;
         },100)
-        setInterval(()=>{
-                    
-            if(mudar){
-                invaderX += 50;
-                mudar = false
-            }else{
-                invaderX-=50
-                mudar = true
-            }
-            invaderImg.style.left = `${invaderX}px`
 
-        },1000)
+        
+
+        setInterval(()=>{        
+            if(mudar){
+                invaderX += 1;
+                if (invaderX >= limit_x + 25) {
+                    mudar = false
+                }
+            }else{
+                invaderX -= 1;
+                if (invaderX <= limit_x - 25) {
+                    mudar = true
+                }
+            }
+            invaderImg.style.left = `${invaderX}px`  
+
+        },20)
 
 
 
