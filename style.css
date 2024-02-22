@@ -41,29 +41,20 @@ body {
     display: flex;
     flex-direction: column;
 
+    justify-content: center;
+    align-items: center;
     
     background-color: red;
     height: 720px;
     width: 1080px;
 }
 
-button:hover {
-    box-shadow: 1px 1px 20px 10px rgba(4, 255, 8, 0.527);
-}
-
-.menu > div {
-    justify-content: space-around;
-    align-items: center;
-
-    max-height: 600px;
-    margin-top: 300px;
-}
 .flex {
     display: flex;
     flex-direction: column;
 }
 
-.menu > div > button {
+.btn-temp-1 {
     padding: 10px;
     margin: 5px;
     font-size: 30px;
@@ -73,9 +64,39 @@ button:hover {
     border: none;
 }
 
+.btn-temp-1:hover {
+    box-shadow: 1px 1px 20px 10px rgba(4, 255, 8, 0.527);
+}
+
+
+.btn-temp-2 {
+    padding: 10px;
+    margin: 5px;
+    font-size: 30px;
+    color: rgba(255, 255, 255, 0.663);
+    text-align: start;
+    background-color: rgba(28, 28, 28, 0.47);
+    border: none;
+}
+
+.btn-temp-2:hover {
+    background-color: rgba(0, 0, 0, 0.577);
+}
+
+
+
 .btn-pause {
     background-color: transparent;
     border: none;
+}
+
+.multiplayer-rooms {
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgba(0, 0, 0, 0.218);
+    width: 900px;
+    height: 600px;
 }
 
 .disable {

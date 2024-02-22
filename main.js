@@ -26,8 +26,7 @@ canhao.style.top = (screen_height - parseInt(canhao.height) - 10)+'px'
 canhao.style.left = `${canhaoX}px`
 canvas.appendChild(canhao)
 
-
-function jogoInicio(){
+export function jogoInicio(){
     window.addEventListener('keydown',(e)=>{
         if((e.key == 'ArrowRight' || e.key == 'd') && canhaoX < widthMax){
 

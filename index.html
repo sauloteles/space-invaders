@@ -8,28 +8,78 @@
 
     <script src="./main.js" defer></script>
     <script src="./scripts/menu.js"></script>
+    <script src="./scripts/multiplayer.js"></script>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div id="menu" class="menu activated">
         <div id="main-menu" class="main-menu flex activated">
-            <button onclick="play()">iniciar</button>
-            <button onclick="multiplayerMenu()">multiplayer</button>
+            <button onclick="play()" class="btn-temp-1">iniciar</button>
+            <button onclick="multiplayerMenu()" class="btn-temp-1">multiplayer</button>
         </div>
         <div id="multiplayer-menu" class="multiplayer-menu flex disable">
-            <button>join</button>
-            <button>host</button>
-            <button onclick="back()">back</button>
+            <button onclick="show_rooms()" class="btn-temp-1">join</button>
+            <button onclick="online()" class="btn-temp-1">host</button>
+            <button onclick="backToMenu()" class="btn-temp-1">back</button>
         </div>
         <div id="multiplayer-rooms" class="multiplayer-rooms flex disable">
             
+            <button onclick="backToMultiplayerMenu()">back</button>
         </div>
     </div>
     <main id="canvas" class="canvas disable">
         <div class="hud">
             <p class="pontos">Pontos:</p>
-            <button class="btn-pause"><img src="./assets/svg/pause_icon.svg" alt="pause icon"></button>
+            <button class="btn-pause" class="btn-temp-1"><img src="./assets/svg/pause_icon.svg" alt="pause icon"></button>
         </div>
     </main>
+    <script>
+        const ws = new WebSocket("ws://localhost:3000")
+        function online() {
+            let username = localStorage.getItem("username")
+            if (true) {
+                username = prompt("Seu username: ")
+                localStorage.setItem("username", username)
+            }
+            hostGame()
+
+            ws.send(JSON.stringify({
+                type: "new_player",
+                username: localStorage.getItem("username")
+            }));
+
+            ws.send(JSON.stringify({
+                type: "new_room"
+            }));
+        }
+
+        function show_rooms() {
+            join()
+            ws.send(JSON.stringify({
+                type: "view_rooms"
+            }));
+            
+        }
+
+
+
+        ws.onmessage = (message) => {
+            let Message = JSON.parse(message.data)
+            if (Message.type == "view_rooms") {
+                let rooms = document.getElementById("multiplayer-rooms")
+                Message.rooms.forEach((room) => {
+                    let Room = document.createElement('button')
+                    Room.className = "btn-temp-2"
+                    Room.innerText = room.name
+                    rooms.appendChild(Room)
+                });
+            }
+        }
+
+
+
+
+
+    </script>
 </body>
 </html>
