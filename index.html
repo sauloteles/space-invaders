@@ -4,12 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>space invaders</title>
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+
     <script src="./main.js" defer></script>
+    <script src="./scripts/menu.js"></script>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <main class="canvas">
-        <p class="pontos">Pontos:</p>
+    <div id="menu" class="menu activated">
+        <div id="main-menu" class="main-menu flex activated">
+            <button onclick="play()">iniciar</button>
+            <button onclick="multiplayerMenu()">multiplayer</button>
+        </div>
+        <div id="multiplayer-menu" class="multiplayer-menu flex disable">
+            <button>join</button>
+            <button>host</button>
+            <button onclick="back()">back</button>
+        </div>
+        <div id="multiplayer-rooms" class="multiplayer-rooms flex disable">
+            
+        </div>
+    </div>
+    <main id="canvas" class="canvas disable">
+        <div class="hud">
+            <p class="pontos">Pontos:</p>
+            <button class="btn-pause"><img src="./assets/svg/pause_icon.svg" alt="pause icon"></button>
+        </div>
     </main>
 </body>
 </html>

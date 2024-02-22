@@ -1,14 +1,20 @@
 const canvas = document.getElementsByClassName('canvas')[0];
 const pontos =  document.getElementsByClassName('pontos')[0];
 
+const screen_height = 720
+const screen_width = 1080
+
+
 let canhaoX = 250;
 let velocidade = 10;
 let balaY = 500
 let balaX
-const widthMax = 530;
-const widthMin = 0;
+let border = 10
+
+const widthMax = screen_width - border;
+const widthMin = 0 + border;
 const canhao = new Image();
-let pontosCont =0
+let pontosCont = 0
 let atirar = true;
 pontos.textContent = `Pontos: ${pontosCont}`
 
@@ -16,16 +22,17 @@ canhao.src = './assets/cannon.png';
 canhao.width = '70';
 canhao.height= '50';
 canhao.style.position = 'absolute'
-canhao.style.top = '550px'
+canhao.style.top = (screen_height - parseInt(canhao.height) - 10)+'px'
 canhao.style.left = `${canhaoX}px`
 canvas.appendChild(canhao)
 
 
 function jogoInicio(){
     window.addEventListener('keydown',(e)=>{
-        if(e.key == 'ArrowRight' && canhaoX < widthMax){
+        if((e.key == 'ArrowRight' || e.key == 'd') && canhaoX < widthMax){
+
             moverCanhaoDireita();
-        }else if(e.key == 'ArrowLeft' && canhaoX > widthMin){
+        }else if((e.key == 'ArrowLeft' || e.key == 'a') && canhaoX > widthMin){
             moverCanhaoEsquerda();
         }else if(e.key == ' '){
             if(atirar) atirarBala();
@@ -51,7 +58,7 @@ function jogoInicio(){
         bala.setAttribute('id','bala')
         function resetBala(){
             atirar = true
-            balaY = 500
+            balaY = (screen_height - parseInt(canhao.height) - 10)
             clearInterval(anima)  
             try {
                 canvas.removeChild(bala)
@@ -75,7 +82,7 @@ function jogoInicio(){
     }
     function invaderCriar(invaderX,invaderY){
         let invaderImg = new Image();
-        let mudar =true;
+        let mudar = true;
 
         invaderImg.src = './assets/invader.png'
         invaderImg.width = '50'
@@ -84,7 +91,7 @@ function jogoInicio(){
         invaderImg.style.left = `${invaderX}px`;  
         canvas.appendChild(invaderImg)
         let anima = setInterval(()=>{
-            if(invaderY <=550){
+            if(invaderY <= 670){
                 invaderImg.style.top = `${invaderY}px`
                 
                 try {
