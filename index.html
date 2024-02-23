@@ -8,13 +8,12 @@
 
     <script src="./main.js" defer></script>
     <script src="./scripts/menu.js"></script>
-    <script src="./scripts/multiplayer.js"></script>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div id="menu" class="menu activated">
         <div id="main-menu" class="main-menu flex activated">
-            <button onclick="play()" class="btn-temp-1">iniciar</button>
+            <button onclick="play(); jogoInicio()" class="btn-temp-1">iniciar</button>
             <button onclick="multiplayerMenu()" class="btn-temp-1">multiplayer</button>
         </div>
         <div id="multiplayer-menu" class="multiplayer-menu flex disable">
@@ -41,7 +40,6 @@
                 username = prompt("Seu username: ")
                 localStorage.setItem("username", username)
             }
-            hostGame()
 
             ws.send(JSON.stringify({
                 type: "new_player",
@@ -51,6 +49,9 @@
             ws.send(JSON.stringify({
                 type: "new_room"
             }));
+
+            hostGame()
+            jogoInicio()
         }
 
         function show_rooms() {
@@ -61,24 +62,63 @@
             
         }
 
+        function enter_room(id) {
+            ws.send(JSON.stringify({
+                type: "enter_room",
+                room_id: id
+            }));
 
+
+            play()
+            var canhao = new Image();
+            spawn_canhao(canhao, "player_2")
+            jogoInicio()
+        }
+
+        window.addEventListener('keydown',(e)=>{
+            if (e.key == 'ArrowRight' || e.key == 'd') {
+                let player = document.getElementById("player")
+                ws.send(JSON.stringify({
+                    type: "player_position",
+                    position: `${parseInt(player.style.left) + 10}px`
+                }))
+            } else if (e.key == 'ArrowLeft' || e.key == 'a'){
+                let player = document.getElementById("player")
+                ws.send(JSON.stringify({
+                    type: "player_position",
+                    position: `${parseInt(player.style.left) - 10}px`
+                }))
+            }else if(e.key == ' '){
+                
+            };
+        })
 
         ws.onmessage = (message) => {
             let Message = JSON.parse(message.data)
+            console.log(Message)
             if (Message.type == "view_rooms") {
                 let rooms = document.getElementById("multiplayer-rooms")
                 Message.rooms.forEach((room) => {
                     let Room = document.createElement('button')
                     Room.className = "btn-temp-2"
                     Room.innerText = room.name
+                    Room.id = room.room_id
+                    Room.onclick = () => enter_room(room.room_id)
                     rooms.appendChild(Room)
                 });
             }
+
+            if (Message.type == "enter_room") {
+                var canhao = new Image();
+                spawn_canhao(canhao, "player_2")
+            }
+
+            if (Message.type == "player_position") {
+                let player_2 = document.getElementById("player_2")
+                player_2.style.left = Message.position_x
+                console.log(player_2.style.left)
+            }
         }
-
-
-
-
 
     </script>
 </body>

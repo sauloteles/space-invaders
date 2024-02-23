@@ -13,20 +13,27 @@ let border = 10
 
 const widthMax = screen_width - border;
 const widthMin = 0 + border;
-const canhao = new Image();
 let pontosCont = 0
 let atirar = true;
 pontos.textContent = `Pontos: ${pontosCont}`
 
-canhao.src = './assets/cannon.png';
-canhao.width = '70';
-canhao.height= '50';
-canhao.style.position = 'absolute'
-canhao.style.top = (screen_height - parseInt(canhao.height) - 10)+'px'
-canhao.style.left = `${canhaoX}px`
-canvas.appendChild(canhao)
 
-export function jogoInicio(){
+function spawn_canhao(canhao, id) {
+    var canvas = document.getElementsByClassName('canvas')[0];
+    canhao.src = './assets/cannon.png';
+    canhao.id = id
+    canhao.width = '70';
+    canhao.height= '50';
+    canhao.style.position = 'absolute'
+    canhao.style.top = (screen_height - parseInt(canhao.height) - 10)+'px'
+    canhao.style.left = `${canhaoX}px`
+    canvas.appendChild(canhao)
+}
+
+var canhao = new Image();
+spawn_canhao(canhao, "player")
+
+function jogoInicio(){
     window.addEventListener('keydown',(e)=>{
         if((e.key == 'ArrowRight' || e.key == 'd') && canhaoX < widthMax){
 
@@ -123,8 +130,6 @@ export function jogoInicio(){
 
         },20)
 
-
-
         
     }
     function detectarColisao(balaX,Ybala,posicaoInvaderX,posicaoInvaderY,invaderImg ){
@@ -143,6 +148,3 @@ export function jogoInicio(){
     invaderCriar(250,0)
 
 }
-
-
-jogoInicio()
