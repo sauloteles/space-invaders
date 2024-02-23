@@ -1,17 +1,19 @@
 const canvas = document.getElementsByClassName('canvas')[0];
 const pontos =  document.getElementsByClassName('pontos')[0];
+const vida =  document.getElementsByClassName('vida')[0];
+const menu = document.getElementsByClassName('menu')[0]
 
+let vidaCont = 5;
 let canhaoX = 250;
 let velocidade = 10;
 let balaY = 500
 let balaX
+let speedInvader = 1
 const widthMax = 530;
 const widthMin = 0;
 const canhao = new Image();
 let pontosCont =0
 let atirar = true;
-pontos.textContent = `Pontos: ${pontosCont}`
-
 canhao.src = './assets/cannon.png';
 canhao.width = '70';
 canhao.height= '50';
@@ -19,6 +21,11 @@ canhao.style.position = 'absolute'
 canhao.style.top = '550px'
 canhao.style.left = `${canhaoX}px`
 canvas.appendChild(canhao)
+let quantidade = 50;
+function iniciar(){
+    menu.classList.add('none')
+    canvas.classList.remove('none')
+}
 
 
 function jogoInicio(){
@@ -77,40 +84,43 @@ function jogoInicio(){
         let invaderImg = new Image();
         let mudar =true;
 
-        invaderImg.src = './assets/invader.png'
-        invaderImg.width = '50'
+        invaderImg.src = './assets/space__0000_A1.png'
+        invaderImg.width = '25'
         invaderImg.style.position = 'absolute';
         invaderImg.setAttribute('class','invader-img')
         
         invaderImg.style.left = `${invaderX}px`;  
         canvas.appendChild(invaderImg)
         let anima = setInterval(()=>{
-            if(invaderY <=550){
+            if(invaderY < 580){
                 invaderImg.style.top = `${invaderY}px`
-                
+                invaderY+= speedInvader;
                 try {
                     detectarColisao(balaX,balaY,invaderX,invaderY,invaderImg);
                 } catch (error) {
                 }
             }else{
-                clearInterval(anima)
                 canvas.removeChild(invaderImg)
-                
-                              
+                --vidaCont;
+                vida.textContent = `vida:5/${vidaCont}`
+                clearInterval(anima)
+
             }
-            invaderY+=1;
-        },100)
-        setInterval(()=>{
-                    
+            
+        
+        },50)
+        setInterval(()=>{ 
             if(mudar){
                 invaderX += 50;
                 mudar = false
+                invaderImg.src = './assets/space__0001_A2.png'
             }else{
                 invaderX-=50
                 mudar = true
+                invaderImg.src = './assets/space__0000_A1.png'
             }
             invaderImg.style.left = `${invaderX}px`
-
+            // invaderImg.src = './assets/space__0001_A1.png'
         },1000)
 
 
@@ -118,12 +128,12 @@ function jogoInicio(){
         
     }
     function detectarColisao(balaX,Ybala,posicaoInvaderX,posicaoInvaderY,invaderImg ){
-        if(posicaoInvaderY+40 > Ybala && posicaoInvaderY < Ybala  && balaX >=posicaoInvaderX-20 && balaX < posicaoInvaderX+20){            
+        if(posicaoInvaderY+20 > Ybala && posicaoInvaderY-40 < Ybala  && balaX >=posicaoInvaderX-25 && balaX < posicaoInvaderX){            
             canvas.removeChild(invaderImg)
             let bala = document.getElementById('bala')
             balaY = -1
             canvas.removeChild(bala )
-            pontos.textContent = `Pontos: ${++pontosCont}`
+            pontos.textContent = `pontos: ${++pontosCont}`
             console.log(pontosCont)
         }
     }
@@ -136,16 +146,17 @@ function jogoInicio(){
         let invader = document.getElementsByClassName('invader-img')[0];
         let existeInvader = document.body.contains(invader);
         if (!existeInvader) {            
-            quantidade = 10
-            for(let i =0;i<=500;i+=50){
+           
+            for(let i =50;i<=quantidade;i+=50){
                 let y = Math.floor(Math.random() * (200 - 20 + 20)) + 20;
                 invaderCriar(i,y)
             }
+            if(quantidade < 500){
+                quantidade += 50;
+                speedInvader = Math.floor(Math.random() * (2 - 1 + 1)) + 1
+            } 
         }
     },10)
-
-
-
 }
 
 
