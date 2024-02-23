@@ -23,8 +23,9 @@
         </div>
         <div id="multiplayer-rooms" class="multiplayer-rooms flex disable">
             
-            <button onclick="backToMultiplayerMenu()">back</button>
+            
         </div>
+        <button onclick="backToMultiplayerMenu()" id="btn-back" class="disable">back</button>
     </div>
     <main id="canvas" class="canvas disable">
         <div class="hud">
@@ -33,7 +34,45 @@
         </div>
     </main>
     <script>
-        const ws = new WebSocket("ws://localhost:3000")
+        var observer_enemy = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutationRecord) {
+                let enemys = []
+                Array.prototype.slice.call(document.getElementsByClassName("enemy")).map((enemy) => {
+                    enemys.push({
+                        id: enemy.id,
+                        pos_x: enemy.style.left,
+                        pos_y: enemy.style.top
+                    })
+                });
+
+                ws.send(JSON.stringify({
+                    type: "enemys_position",
+                    enemys: enemys
+                }))
+
+            });
+        });
+
+        var observer_bullet = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutationRecord) {
+                let enemys = []
+                Array.prototype.slice.call(document.getElementsByClassName("enemy")).map((enemy) => {
+                    enemys.push({
+                        id: enemy.id,
+                        pos_x: enemy.style.left,
+                        pos_y: enemy.style.top
+                    })
+                });
+
+                ws.send(JSON.stringify({
+                    type: "enemys_position",
+                    enemys: enemys
+                }))
+
+            });
+        });
+
+        const ws = new WebSocket("ws://0.tcp.sa.ngrok.io:16966")
         function online() {
             let username = localStorage.getItem("username")
             if (true) {
@@ -49,9 +88,16 @@
             ws.send(JSON.stringify({
                 type: "new_room"
             }));
+            localStorage.setItem("role_room", "host")
+            
 
             hostGame()
             jogoInicio()
+            if (localStorage.getItem("role_room") == "host") {
+                Array.prototype.slice.call(document.getElementsByClassName("enemy")).map((enemy, index) => {
+                    observer_enemy.observe(enemy, { attributes : true, attributeFilter : ['style'] });    
+                })
+            }
         }
 
         function show_rooms() {
@@ -63,16 +109,28 @@
         }
 
         function enter_room(id) {
+            let username = localStorage.getItem("username")
+            if (true) {
+                username = prompt("Seu username: ")
+                localStorage.setItem("username", username)
+            }
+
+            ws.send(JSON.stringify({
+                type: "new_player",
+                username: localStorage.getItem("username")
+            }));
+
             ws.send(JSON.stringify({
                 type: "enter_room",
                 room_id: id
             }));
 
+            localStorage.setItem("role_room", "guest")
 
             play()
             var canhao = new Image();
             spawn_canhao(canhao, "player_2")
-            jogoInicio()
+            joinGame()
         }
 
         window.addEventListener('keydown',(e)=>{
@@ -89,15 +147,19 @@
                     position: `${parseInt(player.style.left) - 10}px`
                 }))
             }else if(e.key == ' '){
-                
+                console.log("atirou e enviou kkk")
+                ws.send(JSON.stringify({
+                    type: "new_bullet",
+                    position: `${parseInt(player.style.left)}px`
+                }))
             };
         })
 
         ws.onmessage = (message) => {
             let Message = JSON.parse(message.data)
-            console.log(Message)
             if (Message.type == "view_rooms") {
                 let rooms = document.getElementById("multiplayer-rooms")
+                rooms.innerHTML = ""
                 Message.rooms.forEach((room) => {
                     let Room = document.createElement('button')
                     Room.className = "btn-temp-2"
@@ -116,7 +178,53 @@
             if (Message.type == "player_position") {
                 let player_2 = document.getElementById("player_2")
                 player_2.style.left = Message.position_x
-                console.log(player_2.style.left)
+            }
+
+            if (Message.type == "enemys_position") {    
+                let max = parseInt(Message.enemys.length)
+                Array.prototype.slice.call(document.getElementsByClassName("enemy")).map((enemy, index) => {
+                    if (index > max-1) {
+                        enemy.remove()
+                    } else {
+                        let current_enemy = Message.enemys[index]
+                        enemy.style.left = current_enemy.pos_x
+                        enemy.style.top = current_enemy.pos_y
+                    }
+                });
+            }
+
+            if (Message.type == "new_bullet") {
+                console.log(Message)
+                const bala = new Image();
+                bala.src = './assets/bullet_line.png';
+                bala.style.position = 'absolute'
+                bala.width = '50'
+                bala.style.top = "670px"
+                bala.style.left = Message.position;
+                bala.className = "bala"
+                canvas.appendChild(bala)
+                function resetBala(){
+                    atirar = true
+                    balaY = (screen_height - 60)
+                    clearInterval(anima)  
+                    try {
+                        canvas.removeChild(bala)
+                    } catch (error) {
+                        
+                    }
+                    
+                }
+
+                let anima = setInterval(()=>{
+                    if(balaY >= 0){
+                        bala.style.top = `${balaY}px`
+                        balaY-=2   
+                        atirar = false;
+                    }else{
+                        resetBala()
+                    }
+
+                },1)
             }
         }
 

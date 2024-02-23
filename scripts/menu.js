@@ -17,9 +17,11 @@ function multiplayerMenu() {
 function join() {
     screen_multiplayer = document.getElementById("multiplayer-menu")
     screen_rooms = document.getElementById("multiplayer-rooms")
+    btn_back = document.getElementById("btn-back")
 
     screen_multiplayer.className = screen_multiplayer.className.replace("activated", "disable")
     screen_rooms.className = screen_rooms.className.replace("disable", "activated")
+    btn_back.className = btn_back.className.replace("disable", "activated")
 }
 
 function backToMenu() {
@@ -33,12 +35,14 @@ function backToMenu() {
 function backToMultiplayerMenu() {
     screen_multiplayer = document.getElementById("multiplayer-menu")
     screen_join = document.getElementById("multiplayer-rooms")
+    btn_back = document.getElementById("btn-back")
 
-    screen_multiplayer.className = screen_multiplayer.className.replace("disable", "activated")
     screen_join.className = screen_join.className.replace("activated", "disable")
+    screen_multiplayer.className = screen_multiplayer.className.replace("disable", "activated")
+    btn_back.className = btn_back.className.replace("activated", "disable")
 }
 
-function hostGame() {  
+function hostGame() {
     screen_multiplayer = document.getElementById("multiplayer-menu")
     screen_main_menu = document.getElementById("main-menu")
     screen_menu = document.getElementById("menu")

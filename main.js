@@ -25,7 +25,7 @@ function spawn_canhao(canhao, id) {
     canhao.width = '70';
     canhao.height= '50';
     canhao.style.position = 'absolute'
-    canhao.style.top = (screen_height - parseInt(canhao.height) - 10)+'px'
+    canhao.style.top = (screen_height - parseInt(canhao.height) - 50)+'px'
     canhao.style.left = `${canhaoX}px`
     canvas.appendChild(canhao)
 }
@@ -41,7 +41,7 @@ function jogoInicio(){
         }else if((e.key == 'ArrowLeft' || e.key == 'a') && canhaoX > widthMin){
             moverCanhaoEsquerda();
         }else if(e.key == ' '){
-            if(atirar) atirarBala();
+            if(atirar) atirarBala(canhaoX);
         };
     })
     function moverCanhaoDireita(){
@@ -52,16 +52,16 @@ function jogoInicio(){
         canhaoX -= velocidade
         canhao.style.left = `${canhaoX}px`
     }
-    function atirarBala(){
+    function atirarBala(pos_x){
         const bala = new Image();
         bala.src = './assets/bullet_line.png';
         bala.style.position = 'absolute'
         bala.width = '50'
-        bala.style.top = '500px'
-        balaX = canhaoX+12;
+        bala.style.top = (screen_height - parseInt(canhao.height) - 10)
+        balaX = pos_x + 12;
         bala.style.left = `${balaX}px`;
+        bala.className = "bala"
         canvas.appendChild(bala)
-        bala.setAttribute('id','bala')
         function resetBala(){
             atirar = true
             balaY = (screen_height - parseInt(canhao.height) - 10)
@@ -75,7 +75,7 @@ function jogoInicio(){
         }
 
         let anima = setInterval(()=>{
-            if(balaY >=0){
+            if(balaY >= 0){
                 bala.style.top = `${balaY}px`
                 balaY-=2   
                 atirar = false;
@@ -94,11 +94,14 @@ function jogoInicio(){
 
         invaderImg.src = './assets/invader.png'
         invaderImg.width = '50'
-        invaderImg.style.position = 'absolute';
+        invaderImg.className = "enemy"
+        invaderImg.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
         
+        invaderImg.style.position = 'absolute';
         invaderImg.style.left = `${invaderX}px`;  
         canvas.appendChild(invaderImg)
         let anima = setInterval(()=>{
+
             if(invaderY <= 670){
                 invaderImg.style.top = `${invaderY}px`
                 
@@ -109,24 +112,24 @@ function jogoInicio(){
             }else{
                 invaderY = 0                
             }
-            invaderY+=speed;
+            invaderY+=1
         },100)
 
         
 
         setInterval(()=>{        
             if(mudar){
-                invaderX += 1;
+                invaderX += 1
                 if (invaderX >= limit_x + 25) {
                     mudar = false
                 }
             }else{
-                invaderX -= 1;
+                invaderX -= 1
                 if (invaderX <= limit_x - 25) {
                     mudar = true
                 }
             }
-            invaderImg.style.left = `${invaderX}px`  
+            invaderImg.style.left = `${invaderX}px`
 
         },20)
 
@@ -146,5 +149,38 @@ function jogoInicio(){
     invaderCriar(50,100)
     invaderCriar(150,0)
     invaderCriar(250,0)
+}
 
+function joinGame() {
+    window.addEventListener('keydown',(e)=>{
+        if((e.key == 'ArrowRight' || e.key == 'd') && canhaoX < widthMax){
+            moverCanhaoDireita();
+        }else if((e.key == 'ArrowLeft' || e.key == 'a') && canhaoX > widthMin){
+            moverCanhaoEsquerda();
+        }
+    })
+    function moverCanhaoDireita(){
+        canhaoX += velocidade
+        canhao.style.left = `${canhaoX}px` 
+    }
+    function moverCanhaoEsquerda(){
+        canhaoX -= velocidade
+        canhao.style.left = `${canhaoX}px`
+    }
+    function invaderCriar(invaderX,invaderY){
+        let invaderImg = new Image();
+        let speed = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+
+        invaderImg.src = './assets/invader.png'
+        invaderImg.width = '50'
+        invaderImg.className = "enemy"
+        invaderImg.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        invaderImg.style.position = 'absolute';
+        invaderImg.style.left = `${invaderX}px`;  
+        canvas.appendChild(invaderImg)
+    }
+    
+    invaderCriar(50,100)
+    invaderCriar(150,0)
+    invaderCriar(250,0)
 }
