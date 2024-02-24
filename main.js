@@ -5,7 +5,7 @@ const menuInicio = document.getElementsByClassName('menu')[0]
 const menuPerdeu = document.getElementsByClassName('menu')[1]
 
 
-let vidaCont = 1;
+let vidaCont = 5;
 let canhaoX = 250;
 let velocidade = 10;
 let balaY = 500
@@ -26,29 +26,41 @@ canhao.style.left = `${canhaoX}px`
 canvas.appendChild(canhao)
 let quantidade = 50;
 
-pontos.textContent = `pontos: ${pontosCont}`
 
 function menuIniciar(){
-    if(menuInicio.classList[menuInicio.classList.length-1] != 'none'){
-        menuInicio.classList.add('none')
-    }if(menuPerdeu.classList[menuPerdeu.classList.length-1] != 'none'){
-        menuPerdeu.classList.add('none')
-    }
+    menuInicio.classList.add('none')
     canvas.classList.remove('none')
     run = true
+    vidaCont = 5
+    quantidade = 50
+    pontosCont = 0
+    vida.textContent = `vida: 5/${vidaCont}`
+    pontos.textContent = `pontos: ${pontosCont}`
+
+
 }
+function reniciarJogo(){
+    canvas.classList.remove('none')
+    menuPerdeu.classList.add('none')
+    vidaCont = 5
+    run = true;
+    quantidade = 50
+    pontosCont = 0
+    vida.textContent = `vida: 5/${vidaCont}`
+    pontos.textContent = `pontos: ${pontosCont}`
+
+
+}
+
 function menuPerda(){
     canvas.classList.add('none')
     menuPerdeu.classList.remove('none')
-    vidaCont = 1
-    run = false;
-    quantidade = 50
-    for(let i = 0; i < document.getElementsByClassName('invader-img').length;++i ){
-            canvas.removeChild(document.getElementsByClassName('invader-img'))
-    }
+}
+function voltarMenu(){
+    menuInicio.classList.remove('none')
+    menuPerdeu.classList.add('none')
 
 }
-
 function moverCanhaoDireita(){
     canhaoX += velocidade
     canhao.style.left = `${canhaoX}px` 
@@ -110,14 +122,17 @@ function invaderCriar(invaderX,invaderY){
             } catch (error) {
             }
         }else{
-            canvas.removeChild(invaderImg)
-            --vidaCont;
+            let existeInvader = document.body.contains(invaderImg);
+            if (existeInvader){
+                canvas.removeChild(invaderImg)            
+                --vidaCont;
+            }
+
             vida.textContent = `vida:5/${vidaCont}`
             clearInterval(anima)
 
         }
         
-    
     },50)
     setInterval(()=>{ 
         if(mudar){
@@ -165,7 +180,7 @@ function jogoInicio(){
             let existeInvader = document.body.contains(invader);
             if (!existeInvader) {            
                 for(let i =50;i<=quantidade;i+=50){
-                    let y = Math.floor(Math.random() * (300 - 1 + 1)) + 1;
+                    let y = Math.floor(Math.random() * (200 - 1 + 1)) + 1;
                     invaderCriar(i,y)
                 }
                 if(quantidade < 500){
@@ -176,7 +191,14 @@ function jogoInicio(){
 
 
             if(atirar) atirarBala();
-            if(vidaCont <= 0) menuPerda();            
+            if(vidaCont == 0){
+                for(let i = 0; i <= document.getElementsByClassName('invader-img').length;++i ){
+                    canvas.removeChild(document.getElementsByClassName('invader-img')[i])
+                }
+                    menuPerda(); 
+                    run = false;
+            
+            }            
         }
 
     },10)
