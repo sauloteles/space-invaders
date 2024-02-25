@@ -155,7 +155,6 @@ function detectarColisao(balaX,Ybala,posicaoInvaderX,posicaoInvaderY,invaderImg 
         balaY = -1
         canvas.removeChild(bala )
         pontos.textContent = `pontos: ${++pontosCont}`
-        console.log(pontosCont)
     }
 }
 
@@ -169,15 +168,13 @@ function jogoInicio(){
         }else if(e.key == ' ' && !atirar){
             atirar = true
             balaX = canhaoX+12;
-            console.log('atira')
         };  
     })
   
     setInterval(()=>{
         if(run){
-            console.log(run)
-            let invader = document.getElementsByClassName('invader-img')[0];
-            let existeInvader = document.body.contains(invader);
+            let invader = document.getElementsByClassName('invader-img');
+            let existeInvader = document.body.contains(invader[0]);
             if (!existeInvader) {            
                 for(let i =50;i<=quantidade;i+=50){
                     let y = Math.floor(Math.random() * (200 - 1 + 1)) + 1;
@@ -192,12 +189,16 @@ function jogoInicio(){
 
             if(atirar) atirarBala();
             if(vidaCont == 0){
-                for(let i = 0; i <= document.getElementsByClassName('invader-img').length;++i ){
-                    canvas.removeChild(document.getElementsByClassName('invader-img')[i])
+               let arrayInvaders = Array.from(invader)
+                for(let i = 0; i < arrayInvaders.length;++i ){
+                    try {
+                        canvas.removeChild(arrayInvaders[i])
+                    } catch (error) {   
+                    }
                 }
-                    menuPerda(); 
-                    run = false;
-            
+                                        
+                menuPerda(); 
+                run = false;
             }            
         }
 
