@@ -8,7 +8,6 @@
  }
 .canvas{
     background-color: black;
-    /* border: 1px solid black; */
     height: 600px;
     width: 600px;
     position: relative;
@@ -42,7 +41,6 @@
     font-size: 82px;
     color: rgb(255, 242, 0);
     text-shadow: 5px -4px #ff0404;
-    /* font-weight: 600; */
 }
 .margin-titulo{
     margin: 0;
@@ -67,12 +65,35 @@
 }
 .btn-iniciar:hover{
     cursor: pointer;
-    color: rgb(255, 242, 0);
-    /* border: 1px solid #ff0404; */
-    text-shadow: 1px -2px #ff0404;
+    /* color: rgb(255, 242, 0);
+    text-shadow: 1px -2px #ff0404; */
 
 }
-
+.seta{
+    color: rgb(255, 242, 0);
+    text-shadow: 1px -2px #ff0404;
+    display: none;
+}
 .titulo-perdeu{
     font-size: 21px;
+}
+
+.como-jogar{
+    font-size: 28px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* .como-jogar button{
+    margin-left: 40%;
+    border: none;
+    color: white;
+    background-color: black;
+    font-size: 21px;
+} */
+/* .como-jogar button:hover{
+    cursor: pointer;
+} */
+
+.margin{
+    margin-left: 35%;
 }

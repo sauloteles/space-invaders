@@ -3,6 +3,12 @@ const pontos =  document.getElementsByClassName('pontos')[0];
 const vida =  document.getElementsByClassName('vida')[0];
 const menuInicio = document.getElementsByClassName('menu')[0]
 const menuPerdeu = document.getElementsByClassName('menu')[1]
+const addSeta = document.getElementsByClassName('btn-iniciar');
+const seta = document.getElementsByClassName('seta')
+const menuExplicacao =  document.getElementsByClassName('como-jogar')[0];
+const menuVoltar = document.getElementsByClassName('.como-jogar button')[0]
+
+
 
 
 let vidaCont = 5;
@@ -25,6 +31,48 @@ canhao.style.top = '550px'
 canhao.style.left = `${canhaoX}px`
 canvas.appendChild(canhao)
 let quantidade = 50;
+
+addSeta[0].addEventListener('mouseover',()=>{
+    for(let i = 0; i < seta.length-4;++i){
+        seta[i].style.display = 'inline'
+    }
+
+})
+addSeta[0].addEventListener('mouseout',()=>{
+    for(let i = 0; i < seta.length-4;++i){
+        seta[i].style.display = 'none'
+    }
+
+})
+addSeta[1].addEventListener('mouseover',()=>{
+    for(let i = 2; i < seta.length-2;++i){
+        seta[i].style.display = 'inline'
+    }
+
+})
+addSeta[1].addEventListener('mouseout',()=>{
+    for(let i = 2; i < seta.length-2;++i){
+        seta[i].style.display = 'none'
+    }
+
+})
+
+addSeta[2].addEventListener('mouseover',()=>{
+    for(let i = 4; i < seta.length;++i){
+        seta[i].style.display = 'inline'
+    }
+
+})
+addSeta[2].addEventListener('mouseout',()=>{
+    for(let i = 4; i < seta.length;++i){
+        seta[i].style.display = 'none'
+    }
+
+})
+
+
+
+
 
 
 function menuIniciar(){
@@ -60,6 +108,10 @@ function voltarMenu(){
     menuInicio.classList.remove('none')
     menuPerdeu.classList.add('none')
 
+}
+function comoJogar(){
+    menuInicio.classList.toggle('none')
+    menuExplicacao.classList.toggle('none')
 }
 function moverCanhaoDireita(){
     canhaoX += velocidade
@@ -105,7 +157,6 @@ function atirarBala(){
 function invaderCriar(invaderX,invaderY){
     let invaderImg = new Image();
     let mudar =true;
-
     invaderImg.src = './assets/space__0000_A1.png'
     invaderImg.width = '25'
     invaderImg.style.position = 'absolute';
@@ -161,9 +212,9 @@ function detectarColisao(balaX,Ybala,posicaoInvaderX,posicaoInvaderY,invaderImg 
 function jogoInicio(){
 
     window.addEventListener('keydown',(e)=>{
-        if(e.key == 'ArrowRight' && canhaoX < widthMax){
+        if(e.key.toLocaleLowerCase() == 'd' && canhaoX < widthMax){
             moverCanhaoDireita();
-        }else if(e.key == 'ArrowLeft' && canhaoX > widthMin){
+        }else if(e.key.toLocaleLowerCase() == 'a' && canhaoX > widthMin){
             moverCanhaoEsquerda();
         }else if(e.key == ' ' && !atirar){
             atirar = true
@@ -172,7 +223,7 @@ function jogoInicio(){
     })
   
     setInterval(()=>{
-        if(run){
+        if(run){    
             let invader = document.getElementsByClassName('invader-img');
             let existeInvader = document.body.contains(invader[0]);
             if (!existeInvader) {            

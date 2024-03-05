@@ -6,6 +6,7 @@
     <title>space invaders</title>
     <script src="./main.js" defer></script>
     <link rel="stylesheet" href="./style.css">
+    <link rel="shortcut icon" href="./assets/space__0001_A2.png" type="image/x-icon">
 </head>
 <body>
     <main class="main flex">
@@ -18,16 +19,34 @@
         <div class="menu">
             <div class="menu--titulo"><p class="margin-titulo">SPACE</p><p class="margin-titulo">INVADERS</p></div>
             <div class="menu--btn">
-                <p class="btn-iniciar" onclick="menuIniciar()">Iniciar Jogo</p>
+                <p class="btn-iniciar" onclick="menuIniciar()">
+                    <span class="seta">></span>Iniciar Jogo<span class="seta"> <</span> 
+                </p>
+                <p class="btn-iniciar" onclick="comoJogar()">
+                    <span class="seta">></span>Como Jogar<span class="seta"> <</span> 
+                </p>
+                
+
             </div>
+        </div>
+        <div class="como-jogar none">
+            <h1>Como Jogar ?</h1>
+            <p>aperte    tecla A para mover o Canhão para ESQUERDA;</p>
+            <p>aperte tecla D para mover o Canhão para DIREITA;</p>
+            <p>aperte tecla SPACE para o Canhão ATIRAR.</p>
+            <p class="btn-iniciar margin" onclick="comoJogar()">
+                <span class="seta">></span>
+                Voltar
+                <span class="seta"> <</span>
+
+            </p>
+            
         </div>
         <div class="menu none">
             <div class="titulo-perdeu"><p class="margin-titulo">VOCÊ</p><p class="margin-titulo">PERDEU</p></div>
             <div class="menu--btn">
                 <p class="btn-iniciar" onclick="reniciarJogo()">Jogar Novamente</p>
                 <p class="btn-iniciar" onclick="voltarMenu()">SAIR</p>
-
-
             </div>         
         </div>
     </main>
