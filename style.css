@@ -62,6 +62,8 @@
 }
 .btn-iniciar{
     font-size: 28px;
+    height: 30px;
+
 }
 .btn-iniciar:hover{
     cursor: pointer;
@@ -73,6 +75,7 @@
     color: rgb(255, 242, 0);
     text-shadow: 1px -2px #ff0404;
     display: none;
+    font-size: 25px;
 }
 .titulo-perdeu{
     font-size: 21px;
@@ -96,4 +99,16 @@
 
 .margin{
     margin-left: 35%;
+}
+/* .head{
+    display: flex;
+} */
+#pausar{
+    height: 32px;
+    margin-left: 95%;
+    margin-top: 0.8%;
+    margin-right: 10%;
+}
+#pausar:hover{
+    cursor: pointer;
 }

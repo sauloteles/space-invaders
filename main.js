@@ -7,6 +7,7 @@ const addSeta = document.getElementsByClassName('btn-iniciar');
 const seta = document.getElementsByClassName('seta')
 const menuExplicacao =  document.getElementsByClassName('como-jogar')[0];
 const menuVoltar = document.getElementsByClassName('.como-jogar button')[0]
+const pausar =  document.getElementById('pausar');
 
 
 
@@ -70,6 +71,17 @@ addSeta[2].addEventListener('mouseout',()=>{
 
 })
 
+function pausarJogo(){
+    run = !run;
+    console.log(run)
+    if(run){
+        pausar.src = './assets/pause.png'
+    }else{
+        pausar.src = './assets/play.png'
+
+    }
+    
+}
 
 
 
@@ -166,11 +178,13 @@ function invaderCriar(invaderX,invaderY){
     canvas.appendChild(invaderImg)
     let anima = setInterval(()=>{
         if(invaderY < 580){
-            invaderImg.style.top = `${invaderY}px`
-            invaderY+= speedInvader;
-            try {
-                detectarColisao(balaX,balaY,invaderX,invaderY,invaderImg);
-            } catch (error) {
+            if(run){
+                invaderImg.style.top = `${invaderY}px`
+                invaderY+= speedInvader;
+                try {
+                    detectarColisao(balaX,balaY,invaderX,invaderY,invaderImg);
+                } catch (error) {
+                }
             }
         }else{
             let existeInvader = document.body.contains(invaderImg);
@@ -179,7 +193,7 @@ function invaderCriar(invaderX,invaderY){
                 --vidaCont;
             }
 
-            vida.textContent = `vida:5/${vidaCont}`
+            vida.textContent = `vida: ${vidaCont}/5`
             clearInterval(anima)
 
         }
@@ -212,14 +226,16 @@ function detectarColisao(balaX,Ybala,posicaoInvaderX,posicaoInvaderY,invaderImg 
 function jogoInicio(){
 
     window.addEventListener('keydown',(e)=>{
-        if(e.key.toLocaleLowerCase() == 'd' && canhaoX < widthMax){
-            moverCanhaoDireita();
-        }else if(e.key.toLocaleLowerCase() == 'a' && canhaoX > widthMin){
-            moverCanhaoEsquerda();
-        }else if(e.key == ' ' && !atirar){
-            atirar = true
-            balaX = canhaoX+12;
-        };  
+        if(run){
+            if(e.key.toLocaleLowerCase() == 'd' && canhaoX < widthMax){
+                moverCanhaoDireita();
+            }else if(e.key.toLocaleLowerCase() == 'a' && canhaoX > widthMin){
+                moverCanhaoEsquerda();
+            }else if(e.key == ' ' && !atirar){
+                atirar = true
+                balaX = canhaoX+12;
+            };  
+        }
     })
   
     setInterval(()=>{
